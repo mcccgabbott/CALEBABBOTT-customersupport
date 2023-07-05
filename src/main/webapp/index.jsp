@@ -1,3 +1,5 @@
+<%@ page import="com.example.calebabbottcustomersupport.Ticket, java.util.Map" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,14 +16,15 @@
                 <th>Subject</th>
             </tr>
         </thead>
-        <% for (Ticket ticket : (Collection</Ticket>) request.getAttribute("tickets")) { %>
-        <tr>
-            <td><a href="tickets/view?id=<%= ticket.getId() %>"><%= ticket.getId() %></a></td>
-            <td><%= ticket.getCustomerName() %></td>
-            <td><%= ticket.getSubject() %></td>
-        </tr>
-        <% } %>
+            <% for (Ticket ticket : (Map<Integer, Ticket>) request.getAttribute("tickets").values()) { %>
+                <tr>
+                    <td><a href="/ticketview?id=<%= ticket.getId() %>"><%= ticket.getId() %></a></td>
+                    <td><%= ticket.getCustomerName() %></td>
+                    <td><%= ticket.getSubject() %></td>
+                </tr>
+            <% } %>
+        </tbody>
     </table>
-    <p><a href="tickets/form">Create Ticket</a></p>
+    <p><a href="/ticketform">Create Ticket</a></p>
 </body>
 </html>
