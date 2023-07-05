@@ -1,4 +1,4 @@
-<%@ page import="com.example.calebabbottcustomersupport" %>
+<%@ page import="com.example.calebabbottcustomersupport.Ticket" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>

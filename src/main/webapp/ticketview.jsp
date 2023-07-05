@@ -1,7 +1,7 @@
+<%@ page import="com.example.calebabbottcustomersupport.Ticket"%>
 <!DOCTYPE html>
 <html lang="en" xmlns="">
 <head>
-<%@ page import="com.example.calebabbottcustomersupport.Ticket"%>
     <meta charset="UTF-8">
     <title>Ticket View</title>
 </head>
