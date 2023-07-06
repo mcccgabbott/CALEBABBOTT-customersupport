@@ -46,7 +46,7 @@ public class TicketServlet extends HttpServlet {
                     downloadAttachment(request, response, ticketId, attachmentIndex);
                 } else {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                            "com.example.calebabbottcustomersupport.Ticket ID and com.example.calebabbottcustomersupport.attachment index parameters are missing");
+                            "com.example.calebabbottcustomersupport.Ticket ID and com.example.calebabbottcustomersupport.Attachment index parameters are missing");
                 }
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid URL");
@@ -67,8 +67,8 @@ public class TicketServlet extends HttpServlet {
 
     private void listTickets(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("tickets", ticketMap.values());
-        request.getRequestDispatcher("/ticket-list.jsp").forward(request, response);
+        request.setAttribute("tickets", ticketMap);
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
     private void viewTicket(HttpServletRequest request, HttpServletResponse response, int ticketId)
@@ -76,7 +76,7 @@ public class TicketServlet extends HttpServlet {
         Ticket ticket = getTicket(ticketId);
         if (ticket != null) {
             request.setAttribute("ticket", ticket);
-            request.getRequestDispatcher("/ticket-view.jsp").forward(request, response);
+            request.getRequestDispatcher("/ticketview.jsp").forward(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "com.example.calebabbottcustomersupport.Ticket not found");
         }
@@ -91,7 +91,7 @@ public class TicketServlet extends HttpServlet {
         if (customerName != null && subject != null && body != null) {
             Ticket ticket = new Ticket(ticketIdGenerator.getAndIncrement(), customerName, subject, body);
             ticketMap.put(ticket.getId(), ticket);
-            response.sendRedirect(request.getContextPath() + "/tickets");
+            response.sendRedirect(request.getContextPath() + "/TicketServlet/");
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing ticket information");
         }
@@ -101,10 +101,10 @@ public class TicketServlet extends HttpServlet {
                                     int attachmentIndex) throws ServletException, IOException {
         Ticket ticket = getTicket(ticketId);
         if (ticket != null) {
-            Map<Integer, attachment> attachments = ticket.getAllAttachments();
-            attachment attachment = attachments.get(attachmentIndex);
+            Map<Integer, Attachment> attachments = ticket.getAllAttachments();
+            Attachment attachment = attachments.get(attachmentIndex);
             if (attachment != null) {
-                response.setHeader("Content-Disposition", "com.example.calebabbottcustomersupport.attachment; filename=\"" + attachment.getName() + "\"");
+                response.setHeader("Content-Disposition", "com.example.calebabbottcustomersupport.Attachment; filename=\"" + attachment.getName() + "\"");
                 response.setContentType("application/octet-stream");
                 try (OutputStream outputStream = response.getOutputStream()) {
                     outputStream.write(attachment.getContents());
@@ -119,7 +119,7 @@ public class TicketServlet extends HttpServlet {
 
     private void showTicketForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/ticket-form.jsp").forward(request, response);
+        request.getRequestDispatcher("/ticketform.jsp").forward(request, response);
     }
 
     private Ticket getTicket(int ticketId) {
@@ -130,7 +130,10 @@ public class TicketServlet extends HttpServlet {
         String fileName = part.getSubmittedFileName();
         InputStream inputStream = part.getInputStream();
         byte[] contents = inputStream.readAllBytes();
-        attachment attachment = new attachment(fileName, contents);
+        Attachment attachment = new Attachment(fileName, contents);
         ticket.addAttachment(attachment);
+    }
+
+    public void destroy() {
     }
 }

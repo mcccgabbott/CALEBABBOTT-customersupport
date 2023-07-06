@@ -1,7 +1,5 @@
 package com.example.calebabbottcustomersupport;
 
-import com.example.calebabbottcustomersupport.attachment;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +8,7 @@ public class Ticket {
     private String customerName;
     private String subject;
     private String body;
-    private Map<Integer, attachment> attachments;
+    private Map<Integer, Attachment> attachments;
 
     public Ticket(int id, String customerName, String subject, String body) {
         this.id = id;
@@ -24,7 +22,7 @@ public class Ticket {
         return id;
     }
 
-    public void addAttachment(attachment attachment) {
+    public void addAttachment(Attachment attachment) {
         attachments.put(attachments.size() + 1, attachment);
     }
 
@@ -52,7 +50,7 @@ public class Ticket {
         this.body = body;
     }
 
-    public void addAttachment(int index, attachment attachment) {
+    public void addAttachment(int index, Attachment attachment) {
         attachments.put(index, attachment);
     }
 
@@ -60,11 +58,11 @@ public class Ticket {
         return attachments.size();
     }
 
-    public attachment getAttachment(int index) {
+    public Attachment getAttachment(int index) {
         return attachments.get(index);
     }
 
-    public Map<Integer, attachment> getAllAttachments() {
+    public Map<Integer, Attachment> getAllAttachments() {
         return attachments;
     }
 }

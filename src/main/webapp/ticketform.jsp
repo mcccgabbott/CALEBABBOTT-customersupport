@@ -1,4 +1,3 @@
-<%@ page import="com.example.calebabbottcustomersupport.Ticket" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +7,7 @@
 </head>
 <body>
     <h1>Create Ticket</h1>
-    <form action="tickets/create" method="POST">
+    <form action="/TicketServlet" method="POST">
         <label>Customer Name:</label>
         <input type="text" id="customerName" name="customerName"><br>
         <label>Subject:</label>
@@ -17,6 +16,6 @@
         <textarea id="body" name="body"></textarea><br>
         <input type="submit" value="Create">
     </form>
-    <p><a href="tickets">Back to Ticket List</a></p>
+    <p><a href="/index">Back to Ticket List</a></p>
 </body>
 </html>
