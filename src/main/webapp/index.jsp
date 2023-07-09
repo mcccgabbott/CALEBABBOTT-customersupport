@@ -39,6 +39,6 @@
             %>
         </tbody>
     </table>
-    <p><a href="/ticketform">Create Ticket</a></p>
+    <p><a href="ticketform.jsp">Create Ticket</a></p>
 </body>
 </html>

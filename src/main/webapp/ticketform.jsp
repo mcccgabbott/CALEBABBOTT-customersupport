@@ -1,3 +1,7 @@
+<%@ page import="com.example.calebabbottcustomersupport.Ticket" %>
+<%@ page import="java.util.Map" %>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +18,8 @@
         <input type="text" id="subject" name="subject"><br>
         <label for="body">Body:</label>
         <textarea id="body" name="body"></textarea><br>
-        <input type="submit" value="Create">
+        <input type="Submit" value="Create">
     </form>
-    <p><a href="/index">Back to Ticket List</a></p>
+    <p><a href="index.jsp">Back to Ticket List</a></p>
 </body>
 </html>

@@ -91,7 +91,7 @@ public class TicketServlet extends HttpServlet {
         if (customerName != null && subject != null && body != null) {
             Ticket ticket = new Ticket(ticketIdGenerator.getAndIncrement(), customerName, subject, body);
             ticketMap.put(ticket.getId(), ticket);
-            response.sendRedirect(request.getContextPath() + "/TicketServlet/");
+            response.sendRedirect(request.getContextPath() + "/TicketServlet");
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing ticket information");
         }
