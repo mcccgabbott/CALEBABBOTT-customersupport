@@ -1,5 +1,8 @@
 <%@ page import="com.example.calebabbottcustomersupport.Ticket" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.Map.Entry" %>
+<%@ page import="java.util.HashMap" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,37 +11,30 @@
 </head>
 <body>
     <h1>Ticket List</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Customer Name</th>
-                <th>Subject</th>
-            </tr>
-        </thead>
-        <tbody>
-            <%
-            Map<Integer, Ticket> ticketMap = (Map<Integer, Ticket>) request.getAttribute("tickets");
-            if (ticketMap != null) {
-                for (Ticket ticket : ticketMap.values()) {
-            %>
-                <tr>
-                    <td><a href="/TicketServlet/view?id=<%= ticket.getId() %>"><%= ticket.getId() %></a></td>
-                    <td><%= ticket.getCustomerName() %></td>
-                    <td><%= ticket.getSubject() %></td>
-                </tr>
-            <%
-                }
-            } else {
-            %>
-                <tr>
-                    <td colspan="3">No tickets found</td>
-                </tr>
-            <%
+    <%
+        Map<Integer, Ticket> tickets = (Map<Integer, Ticket>) request.getAttribute("tickets");
+        if (tickets != null && !tickets.isEmpty()) {
+            for (Entry<Integer, Ticket> entry : tickets.entrySet()) {
+                int ticketId = entry.getKey();
+                Ticket ticket = entry.getValue();
+    %>
+    <div>
+        <h3>Ticket <%= ticketId %></h3>
+        <p>Customer Name: <%= ticket.getCustomerName() %></p>
+        <p>Subject: <%= ticket.getSubject() %></p>
+        <p>Body: <%= ticket.getBody() %></p>
+        <p>
+            <a href="TicketServlet?action=view&id=<%= ticketId %>">View Ticket</a>
+
+        </p>
+    </div>
+    <%
             }
-            %>
-        </tbody>
-    </table>
-    <p><a href="ticketform.jsp">Create Ticket</a></p>
+        } else {
+    %>
+    <p>No tickets found.</p>
+    <% } %>
+    <p><a href="TicketServlet?action=form">Create New Ticket</a></p>
+
 </body>
 </html>

@@ -11,15 +11,17 @@
 </head>
 <body>
     <h1>Create Ticket</h1>
-    <form action="/TicketServlet" method="POST">
+    <form action="TicketServlet" method="POST">
+      <input type="hidden" name="action" value="create">
         <label>Customer Name:</label>
-        <input type="text" id="customerName" name="customerName"><br>
+        <input type="text" name="customerName"><br>
         <label>Subject:</label>
-        <input type="text" id="subject" name="subject"><br>
-        <label for="body">Body:</label>
-        <textarea id="body" name="body"></textarea><br>
-        <input type="Submit" value="Create">
+        <input type="text" name="subject"><br>
+        <label>Body:</label>
+        <textarea name="body"></textarea><br>
+        <input type="submit" value="Create">
     </form>
-    <p><a href="index.jsp">Back to Ticket List</a></p>
+    <p><a href="TicketServlet?action=list">Back to Ticket List</a></p>
+
 </body>
 </html>
