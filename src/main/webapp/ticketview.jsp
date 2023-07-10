@@ -8,24 +8,27 @@
 </head>
 <body>
     <h1>Ticket Details</h1>
-    <% Ticket ticket = (Ticket) request.getAttribute("ticket"); %>
-    <% if (ticket != null) { %>
-        <h2>Ticket: <%= ticket.getId() %></h2>
-        <h2>Customer Name: <%= ticket.getCustomerName() %></h2>
+    <% Ticket ticket = (Ticket) request.getAttribute("ticket");
+       if (ticket != null) { %>
         <h2>Subject: <%= ticket.getSubject() %></h2>
-        <h2>Body: <%= ticket.getBody() %></h2>
-        <h2>Attachments:</h2>
-        <%
-        Map<Integer, com.example.calebabbottcustomersupport.Attachment> attachments = ticket.getAllAttachments();
-        if (attachments.isEmpty()) {
-            out.println("No attachments");
-        } else {
-            for (Map.Entry<Integer, com.example.calebabbottcustomersupport.Attachment> entry : attachments.entrySet()) {
-                int attachmentIndex = entry.getKey();
-                com.example.calebabbottcustomersupport.Attachment attachment = entry.getValue();
-        %>
-        <p>Attachment <%= attachmentIndex %>: <%= attachment.getName() %></p>
-        <% } } %>
+        <p>Customer Name: <%= ticket.getCustomerName() %></p>
+        <p>Body: <%= ticket.getBody() %></p>
+        <% Map<Integer, Attachment> attachments = ticket.getAllAttachments();
+           if (!attachments.isEmpty()) { %>
+            <h3>Attachments:</h3>
+            <ul>
+                <% for (Map.Entry<Integer, Attachment> entry : attachments.entrySet()) {
+                       int attachmentIndex = entry.getKey();
+                       Attachment attachment = entry.getValue();
+                %>
+                <li>
+                    <%= attachment.getName() %> - <a href="TicketServlet?action=download&id=<%= ticket.getId() %>&attachmentIndex=<%= attachmentIndex %>">Download</a>
+                </li>
+                <% } %>
+            </ul>
+        <% } else { %>
+            <p>No attachments</p>
+        <% } %>
     <% } else { %>
         <p>Ticket not found</p>
     <% } %>
