@@ -10,7 +10,8 @@
     <h1>Ticket Details</h1>
     <% Ticket ticket = (Ticket) request.getAttribute("ticket");
        if (ticket != null) { %>
-        <h2>Subject: <%= ticket.getSubject() %></h2>
+       <h2>Ticket <%= ticket.getId() %></h2>
+        <h2><%= ticket.getSubject() %></h2>
         <p>Customer Name: <%= ticket.getCustomerName() %></p>
         <p>Body: <%= ticket.getBody() %></p>
         <% Map<Integer, Attachment> attachments = ticket.getAllAttachments();

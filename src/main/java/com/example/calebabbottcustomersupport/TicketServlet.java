@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.LinkedHashMap;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import jakarta.servlet.ServletOutputStream;
 
 
 
@@ -76,7 +75,16 @@ public class TicketServlet extends HttpServlet {
 
     private void listTickets(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("tickets", ticketMap);
+        Map<Integer, Ticket> tickets = ticketMap;
+        Map<Integer, Boolean> hasAttachmentsMap = new LinkedHashMap<>();
+
+        for (Ticket ticket : tickets.values()) {
+            boolean hasAttachments = !ticket.getAllAttachments().isEmpty();
+            hasAttachmentsMap.put(ticket.getId(), hasAttachments);
+        }
+
+        request.setAttribute("tickets", tickets);
+        request.setAttribute("hasAttachmentsMap", hasAttachmentsMap);
         request.getRequestDispatcher("index.jsp").forward(request, response);
     }
 
