@@ -22,10 +22,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        boolean signupSuccess = Boolean.parseBoolean(request.getParameter("signupSuccess"));
-
         // Forward the request to the login page
-        request.setAttribute("signupSuccess", signupSuccess);
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
@@ -50,7 +47,9 @@ public class LoginServlet extends HttpServlet {
     }
 
     private boolean isValidUser(String username, String password) {
-
+        // You can implement your own logic to validate the username and password
+        // For example, you can check against a database of users or use hard-coded values
+        // Here's a simple example:
         return username.equals("admin") && password.equals("admin123");
     }
 }
