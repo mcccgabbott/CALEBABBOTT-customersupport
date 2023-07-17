@@ -11,6 +11,7 @@
 </head>
 <body>
     <h1>Ticket List</h1>
+    <p>Welcome, ${sessionScope.username}! (<a href="LogoutServlet">Logout</a>)</p>
     <%
         Map<Integer, Ticket> tickets = (Map<Integer, Ticket>) request.getAttribute("tickets");
         Map<Integer, Boolean> hasAttachmentsMap = (Map<Integer, Boolean>) request.getAttribute("hasAttachmentsMap");
@@ -38,6 +39,5 @@
         }
     %>
     <p><a href="TicketServlet?action=form">Create Ticket</a></p>
-
 </body>
 </html>
