@@ -47,9 +47,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     private boolean isValidUser(String username, String password) {
-        // You can implement your own logic to validate the username and password
-        // For example, you can check against a database of users or use hard-coded values
-        // Here's a simple example:
+
         return username.equals("admin") && password.equals("admin123");
     }
 }
