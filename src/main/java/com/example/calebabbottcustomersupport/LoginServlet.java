@@ -18,6 +18,14 @@ import jakarta.servlet.http.Part;
 
 @WebServlet(name = "LoginServlet", value = "/LoginServlet")
 public class LoginServlet extends HttpServlet {
+    private Map<String, String> userCredentials;
+
+    public void init() {
+        // Initialize the user credentials map
+        userCredentials = new HashMap<>();
+        userCredentials.put("admin", "admin123");
+        // Add more username-password combinations as needed
+    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,7 +40,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // Check username and password
+        // Check username and password against the user credentials map
         if (isValidUser(username, password)) {
             // Set user information in session
             request.getSession().setAttribute("username", username);
@@ -47,7 +55,7 @@ public class LoginServlet extends HttpServlet {
     }
 
     private boolean isValidUser(String username, String password) {
-
-        return username.equals("admin") && password.equals("admin123");
+        // Check if the provided username and password exist in the user credentials map
+        return userCredentials.containsKey(username) && userCredentials.get(username).equals(password);
     }
 }
