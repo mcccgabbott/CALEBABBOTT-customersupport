@@ -12,8 +12,11 @@
         <input type="text" id="username" name="username"><br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password"><br>
-        <input type="submit" value="Login">
+         <input type="hidden" name="action" value="login">
+            <input type="submit" value="Login">
     </form>
+
+     <p>Don't have an account? <a href="signup.jsp">Sign Up</a></p>
 
         <p style="color:red">
             <% String errorMessage = (String) request.getAttribute("error");

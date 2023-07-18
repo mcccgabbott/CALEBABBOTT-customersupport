@@ -18,7 +18,6 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // Initialization code, if needed
     }
 
     @Override
@@ -34,16 +33,13 @@ public class AuthenticationFilter implements Filter {
         boolean isLoginRequest = request.getRequestURI().equals(loginURI);
 
         if (isLoggedIn || isLoginRequest) {
-            // User is logged in or accessing the login page, so continue with the request
             filterChain.doFilter(request, response);
         } else {
-            // User is not logged in, redirect to the login page
             response.sendRedirect(loginURI);
         }
     }
 
     @Override
     public void destroy() {
-        // Cleanup code, if needed
     }
 }

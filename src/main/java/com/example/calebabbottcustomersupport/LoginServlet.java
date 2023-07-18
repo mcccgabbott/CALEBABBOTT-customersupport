@@ -27,15 +27,30 @@ public class LoginServlet extends HttpServlet {
         // Add more username-password combinations as needed
     }
 
-    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Forward the request to the login page
         request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String action = request.getParameter("action");
+
+        switch (action) {
+            case "login":
+                processLogin(request, response);
+                break;
+            case "signup":
+                processSignup(request, response);
+                break;
+            default:
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid action");
+                break;
+        }
+    }
+
+    private void processLogin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -52,6 +67,29 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("error", "Invalid username or password");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
+    }
+
+    private void processSignup(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Check if the username already exists in the user credentials map
+        if (userCredentials.containsKey(username)) {
+            // Show signup page with error message
+            request.setAttribute("error", "Username already exists");
+            request.getRequestDispatcher("signup.jsp").forward(request, response);
+            return;
+        }
+
+        // Add the username and password to the user credentials map
+        userCredentials.put(username, password);
+
+        // Set user information in session
+        request.getSession().setAttribute("username", username);
+
+        // Redirect to the ticket list page
+        response.sendRedirect(request.getContextPath() + "/TicketServlet?action=list");
     }
 
     private boolean isValidUser(String username, String password) {
