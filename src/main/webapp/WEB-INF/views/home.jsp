@@ -1,4 +1,5 @@
 <%@ page import="com.example.calebabbottcustomersupport.Ticket" %>
+<%@ page import="com.example.calebabbottcustomersupport.LoginController" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Map.Entry" %>
 <%@ page import="java.util.HashMap" %>
@@ -11,7 +12,7 @@
 </head>
 <body>
     <h1>Ticket List</h1>
-    <p>Welcome! (<a href="LogoutServlet">Logout</a>)</p>
+    <p>Welcome! (<a href="logout">Logout</a>)</p>
     <%
         Map<Integer, Ticket> tickets = (Map<Integer, Ticket>) request.getAttribute("tickets");
         Map<Integer, Boolean> hasAttachmentsMap = (Map<Integer, Boolean>) request.getAttribute("hasAttachmentsMap");
@@ -28,7 +29,7 @@
         <p>Subject: <%= ticket.getSubject() %></p>
         <p>Body: <%= ticket.getBody() %></p>
         <p>Has Attachments: <%= hasAttachments %></p>
-        <p><a href="TicketServlet?action=view&id=<%= ticketId %>">View Ticket</a></p>
+        <p><a href="ticket/view?id=<%= ticketId %>">View Ticket</a></p>
     </div>
     <%
             }
@@ -38,6 +39,6 @@
     <%
         }
     %>
-    <p><a href="TicketServlet?action=form">Create Ticket</a></p>
+    <p><a href="ticket/form">Create Ticket</a></p>
 </body>
 </html>

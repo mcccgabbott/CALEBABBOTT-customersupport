@@ -10,6 +10,11 @@ public class Ticket {
     private String body;
     private Map<Integer, Attachment> attachments;
 
+    // Add a no-argument constructor
+    public Ticket() {
+        this.attachments = new HashMap<>();
+    }
+
     public Ticket(int id, String customerName, String subject, String body) {
         this.id = id;
         this.customerName = customerName;

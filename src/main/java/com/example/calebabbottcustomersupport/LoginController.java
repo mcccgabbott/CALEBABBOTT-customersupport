@@ -1,6 +1,52 @@
 package com.example.calebabbottcustomersupport;
 
-import java.io.IOException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class LoginController {
+
+    // Map the login page to the /login URL
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView showLoginForm() {
+        return new ModelAndView("login");
+    }
+
+    // Map the login form submission to the /login URL with POST method
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ModelAndView processLogin(HttpServletRequest request) {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Check username and password
+        if (isValidUser(username, password)) {
+            // Set user information in session
+            HttpSession session = request.getSession();
+            session.setAttribute("username", username);
+
+            // Redirect to the homepage
+            return new ModelAndView("redirect:/home");
+        } else {
+            // Show login page with error message
+            ModelAndView modelAndView = new ModelAndView("login");
+            modelAndView.addObject("error", "Invalid username or password");
+            return modelAndView;
+        }
+    }
+
+
+    private boolean isValidUser(String username, String password) {
+
+        return username.equals("admin") && password.equals("admin123");
+    }
+}
+
+/*import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -96,4 +142,4 @@ public class LoginServlet extends HttpServlet {
         // Check if the provided username and password exist in the user credentials map
         return userCredentials.containsKey(username) && userCredentials.get(username).equals(password);
     }
-}
+}*/

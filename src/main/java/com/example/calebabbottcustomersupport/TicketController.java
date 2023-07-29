@@ -1,6 +1,54 @@
 package com.example.calebabbottcustomersupport;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
+import java.util.Map;
+
+@Controller
+@RequestMapping("/ticket")
+public class TicketController {
+    @Autowired
+    private TicketService ticketService;
+
+    @GetMapping("/list")
+    public String listTickets(Model model) {
+        Map<Integer, Ticket> tickets = ticketService.getAllTickets();
+        model.addAttribute("tickets", tickets);
+        return "home";
+    }
+
+    @GetMapping("/view")
+    public String viewTicket(@RequestParam("id") int ticketId, Model model) {
+        Ticket ticket = ticketService.getTicketById(ticketId);
+        if (ticket != null) {
+            model.addAttribute("ticket", ticket);
+            return "ticketview";
+        } else {
+            // Handle ticket not found case
+            return "ticket_not_found";
+        }
+    }
+
+    @GetMapping("/form")
+    public String showTicketForm(Model model) {
+        model.addAttribute("ticket", new Ticket());
+        return "ticketform";
+    }
+
+    @PostMapping("/create")
+    public String createTicket(@ModelAttribute("ticket") Ticket ticket,
+                               @RequestParam(value = "attachment", required = false) MultipartFile attachment) throws IOException {
+        ticketService.createTicket(ticket.getCustomerName(), ticket.getSubject(), ticket.getBody(), attachment);
+        return "redirect:/ticket/list";
+    }
+}
+
+/*import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -15,12 +63,15 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 @WebServlet(name = "TicketServlet", value = "/TicketServlet")
 @MultipartConfig(fileSizeThreshold = 5_242_880, maxFileSize = 20_971_520L, maxRequestSize = 41_943_040L)
 public class TicketServlet extends HttpServlet {
+
+    @Autowired
+    private TicketService ticketService;
     private Map<Integer, Ticket> ticketMap = new HashMap<>();
     private AtomicInteger ticketIdGenerator = new AtomicInteger(1);
 
@@ -85,7 +136,7 @@ public class TicketServlet extends HttpServlet {
 
         request.setAttribute("tickets", tickets);
         request.setAttribute("hasAttachmentsMap", hasAttachmentsMap);
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 
     private void viewTicket(HttpServletRequest request, HttpServletResponse response)
@@ -183,4 +234,4 @@ public class TicketServlet extends HttpServlet {
 
     public void destroy() {
     }
-}
+}*/
