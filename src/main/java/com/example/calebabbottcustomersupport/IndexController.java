@@ -25,7 +25,7 @@ public class IndexController {
         model.addAttribute("tickets", tickets);
         model.addAttribute("hasAttachmentsMap", hasAttachmentsMap);
 
-        return "/home";
+        return "/ticket/list";
     }
 }
 
