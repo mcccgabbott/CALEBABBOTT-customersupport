@@ -39,6 +39,6 @@
     <%
         }
     %>
-    <p><a href="ticket/form">Create Ticket</a></p>
+    <p><a href="form">Create Ticket</a></p>
 </body>
 </html>
