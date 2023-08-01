@@ -30,7 +30,7 @@ public class LoginController {
             session.setAttribute("username", username);
 
             // Redirect to the homepage
-            return new ModelAndView("redirect:/ticket/list");
+            return new ModelAndView("redirect:/tickets/list");
         } else {
             // Show login page with error message
             ModelAndView modelAndView = new ModelAndView("login");

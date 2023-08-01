@@ -1,31 +1,28 @@
-<%@ page import="com.example.calebabbottcustomersupport.Attachment" %>
-<%@ page import="java.util.Map" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <title>Create Ticket</title>
 </head>
 <body>
+
     <h1>Create Ticket</h1>
-<form action="create" method="post" enctype="multipart/form-data">
-    <label>Customer Name:</label>
-    <input type="text" name="customerName"><br>
-    <label>Subject:</label>
-    <input type="text" name="subject"><br>
-    <label>Body:</label>
-    <textarea name="body"></textarea><br>
-    <label>Attachment:</label>
-    <input type="file" name="attachment"><br>
-    <input type="submit" value="Create">
-</form>
+    <form:form method="POST" action="create" modelAttribute="ticket" enctype="multipart/form-data">
+        <form:label path="customerName">Customer Name:</form:label>
+        <form:input path="customerName"/><br>
+        <form:label path="subject">Subject:</form:label>
+        <form:input path="subject"/><br>
+        <form:label path="body">Body:</form:label>
+        <form:textarea path="body"/><br>
+        <form:label path="attachment">Attachment:</form:label>
+        <form:input type="file" path="attachment"/><br>
+        <input type="submit" value="Create">
+    </form:form>
 
-            <p><a href="TicketServlet?action=list">Back to Ticket List</a></p>
-
-
-
+    <p><a href="list">Back to Ticket List</a></p>
 </body>
 </html>

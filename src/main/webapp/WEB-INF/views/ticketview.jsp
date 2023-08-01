@@ -33,6 +33,6 @@
     <% } else { %>
         <p>Ticket not found</p>
     <% } %>
-    <p><a href="TicketServlet?action=list">Back to Ticket List</a></p>
+    <p><a href="list">Back to Ticket List</a></p>
 </body>
 </html>

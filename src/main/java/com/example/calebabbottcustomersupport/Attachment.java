@@ -1,5 +1,7 @@
 package com.example.calebabbottcustomersupport;
 
+import java.util.Arrays;
+
 public class Attachment {
     private String name;
     private byte[] contents;
@@ -24,5 +26,13 @@ public class Attachment {
 
     public void setContents(byte[] contents) {
         this.contents = contents;
+    }
+
+    @Override
+    public String toString() {
+        return "Attachment{" +
+                "name='" + name + '\'' +
+                ", contents=" + Arrays.toString(contents) +
+                '}';
     }
 }

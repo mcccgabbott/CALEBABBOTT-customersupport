@@ -1,5 +1,6 @@
 package com.example.calebabbottcustomersupport;
 
+import org.springframework.web.multipart.MultipartFile;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ public class Ticket {
     private String customerName;
     private String subject;
     private String body;
+    private MultipartFile attachment;
     private Map<Integer, Attachment> attachments;
 
     // Add a no-argument constructor
@@ -23,8 +25,19 @@ public class Ticket {
         this.attachments = new HashMap<>();
     }
 
+    public Ticket(String customerName, String subject, String body) {
+        this.customerName = customerName;
+        this.subject = subject;
+        this.body = body;
+        this.attachments = new HashMap<>();
+    }
+
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void addAttachment(Attachment attachment) {
@@ -70,4 +83,26 @@ public class Ticket {
     public Map<Integer, Attachment> getAllAttachments() {
         return attachments;
     }
+
+    // Add the getter and setter for the attachment field
+    public MultipartFile getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(MultipartFile attachment) {
+        this.attachment = attachment;
+    }
+
+    // Add toString() method for debugging and logging purposes
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", customerName='" + customerName + '\'' +
+                ", subject='" + subject + '\'' +
+                ", body='" + body + '\'' +
+                ", attachments=" + attachments +
+                '}';
+    }
 }
+

@@ -1,36 +1,48 @@
 package com.example.calebabbottcustomersupport;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Controller
-@RequestMapping("/ticket")
+@RequestMapping("/tickets")
 public class TicketController {
-    @Autowired
-    private TicketService ticketService;
+
+    private Map<Integer, Ticket> ticketMap = new HashMap<>();
+    private AtomicInteger ticketIdGenerator = new AtomicInteger(1);
 
     @GetMapping("/list")
-    public String listTickets(Model model) {
-        Map<Integer, Ticket> tickets = ticketService.getAllTickets();
-        model.addAttribute("tickets", tickets);
-        return "home";
-    }
+    public ModelAndView listTickets() {
+        Map<Integer, Ticket> tickets = ticketMap;
+        Map<Integer, Boolean> hasAttachmentsMap = new LinkedHashMap<>();
 
-    @GetMapping("/view")
-    public String viewTicket(@RequestParam("id") int ticketId, Model model) {
-        Ticket ticket = ticketService.getTicketById(ticketId);
+        for (Ticket ticket : tickets.values()) {
+            boolean hasAttachments = !ticket.getAllAttachments().isEmpty();
+            hasAttachmentsMap.put(ticket.getId(), hasAttachments);
+        }
+
+        ModelAndView modelAndView = new ModelAndView("home");
+        modelAndView.addObject("tickets", tickets.values());
+        modelAndView.addObject("hasAttachmentsMap", hasAttachmentsMap);
+        return modelAndView;
+    }
+    @GetMapping("/view/{id}")
+    public String viewTicket(@PathVariable int id, Model model) {
+        Ticket ticket = ticketMap.get(id);
         if (ticket != null) {
             model.addAttribute("ticket", ticket);
             return "ticketview";
         } else {
-            // Handle ticket not found case
-            return "ticket_not_found";
+            throw new TicketNotFoundException();
         }
     }
 
@@ -41,12 +53,67 @@ public class TicketController {
     }
 
     @PostMapping("/create")
-    public String createTicket(@ModelAttribute("ticket") Ticket ticket,
-                               @RequestParam(value = "attachment", required = false) MultipartFile attachment) throws IOException {
-        ticketService.createTicket(ticket.getCustomerName(), ticket.getSubject(), ticket.getBody(), attachment);
-        return "redirect:/ticket/list";
+    public String createTicket(@ModelAttribute("ticket") Ticket ticket, @RequestParam(name = "Attachment", required = false) MultipartFile file) throws IOException {
+        if (ticket.getCustomerName() != null && ticket.getSubject() != null && ticket.getBody() != null) {
+            ticket.setId(ticketIdGenerator.getAndIncrement());
+
+            if (file != null && !file.isEmpty()) {
+                Attachment attachment = new Attachment(file.getOriginalFilename(), file.getBytes());
+                ticket.addAttachment(attachment);
+            }
+
+            ticketMap.put(ticket.getId(), ticket);
+            return "redirect:list";
+        } else {
+            throw new InvalidTicketException();
+        }
+    }
+
+    @GetMapping("/download/{id}/{attachmentIndex}")
+    public String downloadAttachment(@PathVariable int id, @PathVariable int attachmentIndex, Model model) {
+        Ticket ticket = ticketMap.get(id);
+        if (ticket != null) {
+            Map<Integer, Attachment> attachments = ticket.getAllAttachments();
+            Attachment attachment = attachments.get(attachmentIndex);
+            if (attachment != null) {
+                model.addAttribute("attachment", attachment);
+                return "attachment";
+            } else {
+                throw new AttachmentNotFoundException();
+            }
+        } else {
+            throw new TicketNotFoundException();
+        }
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public static class TicketNotFoundException extends RuntimeException {
+        public TicketNotFoundException() {
+            super("Ticket not found");
+        }
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public static class AttachmentNotFoundException extends RuntimeException {
+        public AttachmentNotFoundException() {
+            super("Attachment not found");
+        }
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public static class InvalidTicketException extends RuntimeException {
+        public InvalidTicketException() {
+            super("Invalid ticket information");
+        }
+
     }
 }
+
+
+
+
+
+
 
 /*import java.io.IOException;
 import java.io.InputStream;

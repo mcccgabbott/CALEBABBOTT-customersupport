@@ -1,8 +1,9 @@
 <%@ page import="com.example.calebabbottcustomersupport.Ticket" %>
-<%@ page import="com.example.calebabbottcustomersupport.LoginController" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="java.util.Map.Entry" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" isELIgnored="false" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,32 +14,24 @@
 <body>
     <h1>Ticket List</h1>
     <p>Welcome! (<a href="logout">Logout</a>)</p>
-    <%
-        Map<Integer, Ticket> tickets = (Map<Integer, Ticket>) request.getAttribute("tickets");
-        Map<Integer, Boolean> hasAttachmentsMap = (Map<Integer, Boolean>) request.getAttribute("hasAttachmentsMap");
 
-        if (tickets != null && !tickets.isEmpty()) {
-            for (Map.Entry<Integer, Ticket> entry : tickets.entrySet()) {
-                int ticketId = entry.getKey();
-                Ticket ticket = entry.getValue();
-                boolean hasAttachments = hasAttachmentsMap.get(ticketId);
-    %>
-    <div>
-        <h3>Ticket <%= ticketId %></h3>
-        <p>Customer Name: <%= ticket.getCustomerName() %></p>
-        <p>Subject: <%= ticket.getSubject() %></p>
-        <p>Body: <%= ticket.getBody() %></p>
-        <p>Has Attachments: <%= hasAttachments %></p>
-        <p><a href="ticket/view?id=<%= ticketId %>">View Ticket</a></p>
-    </div>
-    <%
-            }
-        } else {
-    %>
-    <p>No tickets found.</p>
-    <%
-        }
-    %>
+    <c:if test="${not empty tickets}">
+        <c:forEach var="ticket" items="${tickets}">
+            <div>
+                <h3>Ticket ${ticket.id}</h3>
+                <p>Customer Name: ${ticket.customerName}</p>
+                <p>Subject: ${ticket.subject}</p>
+                <p>Body: ${ticket.body}</p>
+                <p>Has Attachments: ${hasAttachmentsMap[ticket.id] ? "Yes" : "No"}</p>
+                <p><a href="view/${ticket.id}">View Ticket</a></p>
+            </div>
+        </c:forEach>
+    </c:if>
+
+    <c:if test="${empty tickets}">
+        <p>No tickets found.</p>
+    </c:if>
+
     <p><a href="form">Create Ticket</a></p>
 </body>
 </html>
