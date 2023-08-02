@@ -11,10 +11,19 @@ public class Ticket {
     private String body;
     private MultipartFile attachment;
     private Map<Integer, Attachment> attachments;
+    private byte[] attachmentContent;
 
     // Add a no-argument constructor
     public Ticket() {
         this.attachments = new HashMap<>();
+    }
+
+    public byte[] getAttachmentContent() {
+        return attachmentContent;
+    }
+
+    public void setAttachmentContent(byte[] attachmentContent) {
+        this.attachmentContent = attachmentContent;
     }
 
     public Ticket(int id, String customerName, String subject, String body) {

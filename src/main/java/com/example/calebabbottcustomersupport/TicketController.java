@@ -53,10 +53,11 @@ public class TicketController {
     }
 
     @PostMapping("/create")
-    public String createTicket(@ModelAttribute("ticket") Ticket ticket, @RequestParam(name = "Attachment", required = false) MultipartFile file) throws IOException {
+    public String createTicket(@ModelAttribute("ticket") Ticket ticket) throws IOException {
         if (ticket.getCustomerName() != null && ticket.getSubject() != null && ticket.getBody() != null) {
             ticket.setId(ticketIdGenerator.getAndIncrement());
 
+            MultipartFile file = ticket.getAttachment();
             if (file != null && !file.isEmpty()) {
                 Attachment attachment = new Attachment(file.getOriginalFilename(), file.getBytes());
                 ticket.addAttachment(attachment);
