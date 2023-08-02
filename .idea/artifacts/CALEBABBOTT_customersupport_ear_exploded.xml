@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="CALEBABBOTT-customersupport:ear exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/CALEBABBOTT_customersupport_ear_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="CALEBABBOTT-customersupport/javaeeApplication/javaEEApplication" />
+    </root>
+  </artifact>
+</component>

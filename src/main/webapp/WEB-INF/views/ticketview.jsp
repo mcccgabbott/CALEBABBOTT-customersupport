@@ -1,4 +1,5 @@
 <%@ page import="com.example.calebabbottcustomersupport.Ticket" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page import="java.util.Map" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,14 +19,13 @@
            if (!attachments.isEmpty()) { %>
             <h3>Attachments:</h3>
             <ul>
-                <% for (Map.Entry<Integer, Attachment> entry : attachments.entrySet()) {
-                       int attachmentIndex = entry.getKey();
-                       Attachment attachment = entry.getValue();
-                %>
-                <li>
-                    <%= attachment.getName() %> - <a href="TicketServlet?action=download&id=<%= ticket.getId() %>&attachmentIndex=<%= attachmentIndex %>">Download</a>
-                </li>
-                <% } %>
+                <c:forEach var="attachmentEntry" items="${ticket.allAttachments}">
+                    <c:set var="attachmentIndex" value="${attachmentEntry.key}" />
+                    <c:set var="attachment" value="${attachmentEntry.value}" />
+                    <li>
+                        ${attachment.name} -  <a href="<c:url value='${ticket.id}/download/${attachmentIndex}'/>">Download</a>
+                    </li>
+                </c:forEach>
             </ul>
         <% } else { %>
             <p>No attachments</p>

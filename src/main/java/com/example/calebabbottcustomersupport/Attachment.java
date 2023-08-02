@@ -4,11 +4,11 @@ import java.util.Arrays;
 
 public class Attachment {
     private String name;
-    private byte[] contents;
+    private byte[] content;
 
     public Attachment(String name, byte[] contents) {
         this.name = name;
-        this.contents = contents;
+        this.content = contents;
     }
 
 
@@ -20,19 +20,19 @@ public class Attachment {
         this.name = name;
     }
 
-    public byte[] getContents() {
-        return contents;
+    public byte[] getContent() {
+        return content;
     }
 
-    public void setContents(byte[] contents) {
-        this.contents = contents;
+    public void setContent(byte[] contents) {
+        this.content = content;
     }
 
     @Override
     public String toString() {
         return "Attachment{" +
                 "name='" + name + '\'' +
-                ", contents=" + Arrays.toString(contents) +
+                ", contents=" + Arrays.toString(content) +
                 '}';
     }
 }

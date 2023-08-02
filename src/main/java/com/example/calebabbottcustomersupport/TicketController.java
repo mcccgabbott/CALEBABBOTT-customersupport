@@ -1,11 +1,15 @@
 package com.example.calebabbottcustomersupport;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -53,7 +57,7 @@ public class TicketController {
     }
 
     @PostMapping("/create")
-    public String createTicket(@ModelAttribute("ticket") Ticket ticket) throws IOException {
+    public String createTicket(@ModelAttribute("ticket") Ticket ticket, Model model) throws IOException {
         if (ticket.getCustomerName() != null && ticket.getSubject() != null && ticket.getBody() != null) {
             ticket.setId(ticketIdGenerator.getAndIncrement());
 
@@ -70,15 +74,18 @@ public class TicketController {
         }
     }
 
-    @GetMapping("/download/{id}/{attachmentIndex}")
-    public String downloadAttachment(@PathVariable int id, @PathVariable int attachmentIndex, Model model) {
+    @GetMapping("{id}/download/{attachmentIndex}")
+    public ResponseEntity<byte[]> downloadAttachment(@PathVariable int id, @PathVariable int attachmentIndex) {
         Ticket ticket = ticketMap.get(id);
         if (ticket != null) {
             Map<Integer, Attachment> attachments = ticket.getAllAttachments();
             Attachment attachment = attachments.get(attachmentIndex);
             if (attachment != null) {
-                model.addAttribute("attachment", attachment);
-                return "attachment";
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                headers.setContentDispositionFormData("attachment", attachment.getName());
+
+                return new ResponseEntity<>(attachment.getContent(), headers, HttpStatus.OK);
             } else {
                 throw new AttachmentNotFoundException();
             }
