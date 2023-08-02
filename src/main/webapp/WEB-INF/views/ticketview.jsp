@@ -23,7 +23,7 @@
                     <c:set var="attachmentIndex" value="${attachmentEntry.key}" />
                     <c:set var="attachment" value="${attachmentEntry.value}" />
                     <li>
-                        ${attachment.name} -  <a href="<c:url value='${ticket.id}/download/${attachmentIndex}'/>">Download</a>
+                        ${attachment.name} -  <a href="<c:url value='/tickets/${id}/download/${attachmentIndex}'/>">Download</a>
                     </li>
                 </c:forEach>
             </ul>
@@ -33,6 +33,6 @@
     <% } else { %>
         <p>Ticket not found</p>
     <% } %>
-    <p><a href="list">Back to Ticket List</a></p>
+    <p><a href="<c:url value='/tickets/list' />">Back to Ticket List</a></p>
 </body>
 </html>

@@ -74,7 +74,7 @@ public class TicketController {
         }
     }
 
-    @GetMapping("{id}/download/{attachmentIndex}")
+    @GetMapping("/{id}/download/{attachmentIndex}")
     public ResponseEntity<byte[]> downloadAttachment(@PathVariable int id, @PathVariable int attachmentIndex) {
         Ticket ticket = ticketMap.get(id);
         if (ticket != null) {
