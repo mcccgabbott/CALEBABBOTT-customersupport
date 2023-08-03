@@ -1,9 +1,9 @@
 <%@ page import="com.example.calebabbottcustomersupport.Ticket" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" isELIgnored="false" %>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +13,7 @@
 </head>
 <body>
     <h1>Ticket List</h1>
-    <p>Welcome! (<a href="logout">Logout</a>)</p>
+    <p>Welcome! ( <a href="<c:url value='/logout'/>">Logout</a>)</p>
 
     <c:if test="${not empty tickets}">
         <c:forEach var="ticket" items="${tickets}">

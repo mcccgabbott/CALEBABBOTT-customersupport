@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class LoginController {
@@ -43,6 +45,15 @@ public class LoginController {
     private boolean isValidUser(String username, String password) {
 
         return username.equals("admin") && password.equals("admin123");
+    }
+    //logout handler:
+    @GetMapping("logout")
+    public View logout(HttpSession session) {
+        // Invalidate the current session
+        session.invalidate();
+
+        // Redirect the user to the login page after logout
+        return new RedirectView("/login", true, false);
     }
 }
 
